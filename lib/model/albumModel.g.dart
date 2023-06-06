@@ -17,22 +17,28 @@ class AlbumModelAdapter extends TypeAdapter<AlbumModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return AlbumModel(
-      userId: fields[0] as int?,
+      albumId: fields[0] as int?,
       id: fields[1] as int?,
       title: fields[2] as String?,
+      url: fields[3] as String?,
+      thumbnailUrl: fields[4] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, AlbumModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.userId)
+      ..write(obj.albumId)
       ..writeByte(1)
       ..write(obj.id)
       ..writeByte(2)
-      ..write(obj.title);
+      ..write(obj.title)
+      ..writeByte(3)
+      ..write(obj.url)
+      ..writeByte(4)
+      ..write(obj.thumbnailUrl);
   }
 
   @override

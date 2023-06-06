@@ -39,6 +39,7 @@ dependencies:
   path_provider: ^2.0.15
   dio: ^5.1.2
   hive_flutter: ^1.1.0
+  fast_cached_network_image: ^1.2.0
 
 dev_dependencies:
   hive_generator: 

@@ -7,26 +7,29 @@ class Nbu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: NbuDBService().checkNbu(),
-      builder: (context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator.adaptive(),
-          );
-        } else if (snapshot.data is String) {
-          return Center(
-            child: Text(snapshot.data),
-          );
-        } else {
-          List<NbuModel> data = snapshot.data as List<NbuModel>;
-          return ListView.builder(itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(data[index].title.toString()),
+    return RefreshIndicator.adaptive(
+      onRefresh: NbuDBService().getNbu,
+      child: FutureBuilder(
+        future: NbuDBService().checkNbu(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
             );
-          },itemCount: data.length,);
-        }
-      },
+          } else if (snapshot.data is String) {
+            return Center(
+              child: Text(snapshot.data),
+            );
+          } else {
+            List<NbuModel> data = snapshot.data as List<NbuModel>;
+            return ListView.builder(itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(data[index].title.toString()),
+              );
+            },itemCount: data.length,);
+          }
+        },
+      ),
     );
   }
 }

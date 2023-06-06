@@ -1,3 +1,4 @@
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_project/db/AlbumDBService.dart';
 import 'package:hive_project/model/albumModel.dart';
@@ -22,11 +23,16 @@ class Album extends StatelessWidget {
             );
           } else {
             List<AlbumModel> data = snapshot.data as List<AlbumModel>;
-            return ListView.builder(itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(data[index].title.toString()),
-              );
-            },itemCount: data.length,);
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: CircleAvatar(
+                      backgroundImage:
+                          FastCachedImageProvider(data[index].thumbnailUrl.toString())),
+                );
+              },
+              itemCount: data.length,
+            );
           }
         },
       ),

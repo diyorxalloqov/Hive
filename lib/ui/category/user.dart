@@ -7,26 +7,32 @@ class User extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: UserDBService().checkUser(),
-      builder: (context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator.adaptive(),
-          );
-        } else if (snapshot.data is String) {
-          return Center(
-            child: Text(snapshot.data),
-          );
-        } else {
-          List<UserModel> data = snapshot.data as List<UserModel>;
-          return ListView.builder(itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(data[index].name.toString()),
+    return RefreshIndicator.adaptive(
+      onRefresh: UserDBService().getUser,
+      child: FutureBuilder(
+        future: UserDBService().checkUser(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
             );
-          },itemCount: data.length,);
-        }
-      },
+          } else if (snapshot.data is String) {
+            return Center(
+              child: Text(snapshot.data),
+            );
+          } else {
+            List<UserModel> data = snapshot.data as List<UserModel>;
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(data[index].name.toString()),
+                );
+              },
+              itemCount: data.length,
+            );
+          }
+        },
+      ),
     );
   }
 }
