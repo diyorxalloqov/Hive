@@ -21,7 +21,7 @@ class AlbumDBService {
     dynamic response = await service.getAlbum();
     if (response is List<AlbumModel>) {
       await openbox();
-      await writeToNBU(response);
+      await writeToAlbum(response);
       return box!.values.toList();
     } else {
       return response;
@@ -38,7 +38,7 @@ class AlbumDBService {
     box = await Hive.openBox<AlbumModel>("AlbumDB");
   }
 
-  Future<void> writeToNBU(List<AlbumModel> model) async {
+  Future<void> writeToAlbum(List<AlbumModel> model) async {
     await openbox();
     await box!.addAll(model);
   }
